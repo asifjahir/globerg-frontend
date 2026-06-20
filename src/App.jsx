@@ -6,13 +6,13 @@ export default function App() {
   const [geopolitics, setGeopolitics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRegion, setSelectedRegion] = useState('ALL');
-  
-  // Fully Open Permissive Live Streams specifically meant for cross-origin embeds
-  const [activeChannel, setActiveChannel] = useState('global_news');
+  const [activeChannel, setActiveChannel] = useState('global_intel');
+
+  // Fully unrestricted web players - no youtube blocks
   const channels = {
-    global_news: "https://www.youtube.com/embed/live_stream?channel=UC4R8DWoMoI7CAwX8_LjQHig&autoplay=1&mute=1", // NASA Live ISS Strategic Monitor
-    space_feed: "https://www.youtube.com/embed/jPTD2snZ_sw?autoplay=1&mute=1", // Alternative Open Global Intel stream
-    earth_cam: "https://www.youtube.com/embed/7VpS_Gf8YQY?autoplay=1&mute=1"  // 24/7 Global Satellite Environment Relay
+    global_intel: "https://www.ustream.tv/embed/17074538?html5=1&autoplay=1&mute=1", // Live Space/Earth Telemetry Desk
+    live_radar: "https://www.rainviewer.com/map.html?loc=23.3642,57.4805,4&o=1&c=3&o=1&g=1&s=1&v=0", // Live Cyber Weather & Satellite Grid Tracker
+    naval_feed: "https://www.marinetraffic.com/en/ais/embed/zoom:4/centery:25/centerx:55/maptype:3/shownames:false/mmsi:0/shipid:0/fleet:/fleet_id:/vessel:0/container:true/show_track:false" // Direct Live Persian Gulf / Strait of Hormuz naval traffic radar
   };
 
   const BACKEND_URL = "https://globerg-backend.onrender.com";
@@ -28,7 +28,7 @@ export default function App() {
       const geoData = await geoRes.json();
       setGeopolitics(geoData);
     } catch (error) {
-      console.error("Error connecting with tactical nodes:", error);
+      console.error("Connection error:", error);
     }
     setLoading(false);
   };
@@ -69,9 +69,9 @@ export default function App() {
       <div className="w-full bg-[#0a0e14] border-b border-slate-800 px-4 py-2 flex flex-wrap justify-between items-center gap-2 z-20">
         <div className="flex items-center gap-3">
           <Shield className="w-5 h-5 text-red-500 animate-pulse" />
-          <span className="font-sans font-black tracking-widest text-white text-sm">GLOBERG // OPERATIONS DESK</span>
+          <span className="font-sans font-black tracking-[0.15em] text-white text-base">GLOBERG</span>
           <div className="flex gap-1">
-            <span className="bg-red-950/80 text-red-400 border border-red-900/60 px-1.5 py-0.5 text-[9px] font-bold tracking-wider animate-pulse">SITUATIONAL CRISIS MODE</span>
+            <span className="bg-red-950/80 text-red-400 border border-red-900/60 px-1.5 py-0.5 text-[9px] font-bold tracking-wider animate-pulse font-mono">LIVE OPERATIONS DESK</span>
             {selectedRegion !== 'ALL' && (
               <button onClick={() => setSelectedRegion('ALL')} className="bg-blue-950 text-blue-400 border border-blue-900 px-1.5 py-0.5 text-[9px] font-bold uppercase hover:bg-blue-900 transition">
                 RESET FILTER [X]
@@ -94,76 +94,73 @@ export default function App() {
       ) : (
         <div className="flex-1 grid grid-cols-1 xl:grid-cols-12 gap-2 p-2 overflow-hidden">
           
-          {/* LEFT COLUMN */}
-          <div className="xl:col-span-7 flex flex-col gap-2 min-h-[500px]">
+          {/* LEFT INTERACTIVE DARK MAP MODULE */}
+          <div className="xl:col-span-7 flex flex-col gap-2 min-h-[550px]">
             <div className="bg-[#0a0e14] border border-slate-800 rounded p-2 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Layers className="w-4 h-4 text-red-500" />
-                <span className="text-slate-200 font-bold tracking-wider uppercase text-[10px]">Tactical Radar Filter Layer</span>
+                <span className="text-slate-200 font-bold tracking-wider uppercase text-[10px]">Interactive Tactical Satellite Map Layer</span>
               </div>
-              <span className="text-slate-500 text-[10px]">ACTIVE NODE: {selectedRegion}</span>
+              <span className="text-slate-500 text-[10px]">ACTIVE TARGET: {selectedRegion}</span>
             </div>
 
-            <div className="flex-1 bg-[#090c12] border border-slate-800 rounded relative overflow-hidden flex flex-col justify-between p-4">
-              <div className="z-10 flex justify-between items-start">
-                <div className="bg-slate-950/95 border border-slate-800 p-2 rounded max-w-xs shadow-2xl">
-                  <span className="text-red-500 font-bold block mb-1">🔴 MATRIX DATA ONLINE</span>
-                  <p className="text-[10px] text-slate-400 leading-normal">Click a target node cluster card below to isolate realtime satellite telemetry logs instantly.</p>
-                </div>
-              </div>
+            <div className="flex-1 bg-[#090c12] border border-slate-800 rounded relative overflow-hidden flex flex-col justify-between">
+              
+              {/* Actual Fully Operational Dark-Themed Matrix Map Interface */}
+              <iframe 
+                title="Tactical Strategic Map"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d45000000!2d35.0!3d24.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sin!4v1718910000000!5m2!1sen!2sin" 
+                className="absolute inset-0 w-full h-full grayscale opacity-40 invert contrast-[1.6] brightness-[0.5] pointer-events-auto"
+                allowFullScreen="" 
+                loading="lazy"
+              ></iframe>
 
-              {/* Interactive Clicking Zones */}
-              <div className="z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 my-auto pt-6">
+              {/* Floating Dashboard Quick Filter Controls over the Map */}
+              <div className="z-10 grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 mt-auto bg-gradient-to-t from-[#06090e] via-[#06090e]/80 to-transparent pt-12">
                 <div 
                   onClick={() => setSelectedRegion('MIDDLE EAST')}
-                  className={`border p-3 rounded cursor-pointer transition transform active:scale-95 ${selectedRegion === 'MIDDLE EAST' ? 'bg-red-950/40 border-red-500 shadow-lg' : 'bg-[#0e1422]/90 border-slate-800 hover:border-red-500'}`}
+                  className={`border p-2.5 rounded cursor-pointer backdrop-blur-sm transition transform active:scale-95 ${selectedRegion === 'MIDDLE EAST' ? 'bg-red-950/70 border-red-500 shadow-lg shadow-red-500/20' : 'bg-[#0a0e14]/90 border-slate-800 hover:border-red-500/60'}`}
                 >
-                  <div className="flex justify-between items-center mb-1.5">
-                    <span className="font-bold text-red-400 tracking-wider">📍 MIDDLE EAST</span>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="font-bold text-red-400 tracking-wider">📍 MIDDLE EAST NODE</span>
                     <span className="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
                   </div>
-                  <div className="text-[10px] text-slate-400 mb-1">Strait of Hormuz Feeds</div>
-                  <div className="text-[9px] text-red-500 font-bold uppercase tracking-widest">CRITICAL INCIDENT</div>
+                  <div className="text-[10px] text-slate-400">Filter Strait of Hormuz Intel</div>
                 </div>
 
                 <div 
                   onClick={() => setSelectedRegion('EUROPE')}
-                  className={`border p-3 rounded cursor-pointer transition transform active:scale-95 ${selectedRegion === 'EUROPE' ? 'bg-blue-950/40 border-blue-500 shadow-lg' : 'bg-[#0e1422]/90 border-slate-800 hover:border-blue-500'}`}
+                  className={`border p-2.5 rounded cursor-pointer backdrop-blur-sm transition transform active:scale-95 ${selectedRegion === 'EUROPE' ? 'bg-blue-950/70 border-blue-500 shadow-lg shadow-blue-500/20' : 'bg-[#0a0e14]/90 border-slate-800 hover:border-blue-500/60'}`}
                 >
-                  <div className="flex justify-between items-center mb-1.5">
+                  <div className="flex justify-between items-center mb-1">
                     <span className="font-bold text-blue-400 tracking-wider">📍 EUROPEAN NODE</span>
                     <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
                   </div>
-                  <div className="text-[10px] text-slate-400 mb-1">Logistics Core Feeds</div>
-                  <div className="text-[9px] text-blue-400 font-bold uppercase tracking-widest">STABLE VECTOR</div>
+                  <div className="text-[10px] text-slate-400">Filter Logistics Telemetry</div>
                 </div>
 
                 <div 
                   onClick={() => setSelectedRegion('ALL')}
-                  className={`border p-3 rounded cursor-pointer transition transform active:scale-95 ${selectedRegion === 'ALL' ? 'bg-slate-900 border-slate-400' : 'bg-[#0e1422]/90 border-slate-800 hover:border-slate-500'}`}
+                  className={`border p-2.5 rounded cursor-pointer backdrop-blur-sm transition transform active:scale-95 ${selectedRegion === 'ALL' ? 'bg-slate-900/90 border-slate-400' : 'bg-[#0a0e14]/90 border-slate-800 hover:border-slate-500'}`}
                 >
-                  <div className="flex justify-between items-center mb-1.5">
+                  <div className="flex justify-between items-center mb-1">
                     <span className="font-bold text-slate-300 tracking-wider">🌐 GLOBAL COMBINED</span>
                     <Eye className="w-3.5 h-3.5 text-slate-400" />
                   </div>
-                  <div className="text-[10px] text-slate-400 mb-1">De-isolate parameters</div>
-                  <div className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">FULL MONITOR VIEW</div>
+                  <div className="text-[10px] text-slate-400">Show Full Global Monitor</div>
                 </div>
-              </div>
-
-              <div className="z-10 border-t border-slate-800/80 pt-2 flex justify-between text-[10px] text-slate-500">
-                <span>SYSTEM INTERFACE: ONLINE</span>
-                <span>SECURE ENCRYPT KEYS: ACTIVE</span>
               </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
+          {/* RIGHT COLUMN: Video Streams & Text Analytics */}
           <div className="xl:col-span-5 flex flex-col gap-2 overflow-y-auto max-h-[82vh] pr-1">
+            
+            {/* Unrestricted Embed-Friendly Stream Desk */}
             <div className="bg-[#0a0e14] border border-slate-800 rounded flex flex-col overflow-hidden">
               <div className="border-b border-slate-800 px-3 py-2 flex flex-wrap justify-between items-center bg-[#0e131b]">
                 <span className="text-slate-200 font-bold flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
-                  <Radio className="w-3.5 h-3.5 text-red-500 animate-pulse" /> UNRESTRICTED VIDEO MATRIX
+                  <Radio className="w-3.5 h-3.5 text-red-500 animate-pulse" /> LIVE STREAM MATRICES (BYPASS)
                 </span>
                 <div className="flex gap-1 mt-1 sm:mt-0">
                   {Object.keys(channels).map((ch) => (
@@ -180,15 +177,16 @@ export default function App() {
               
               <div className="w-full aspect-video bg-black relative">
                 <iframe
-                  className="w-full h-full border-0 absolute top-0 left-0"
+                  className="w-full h-full border-0 absolute top-0 left-0 bg-slate-950"
                   src={channels[activeChannel]}
-                  title="Live Strategic Video Feed"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  title="Unrestricted Strategic Link"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
             </div>
 
+            {/* Split Tables */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <div className="bg-[#0a0e14] border border-slate-800 rounded p-2 flex flex-col">
                 <div className="border-b border-slate-800 pb-1.5 mb-2 flex items-center gap-1.5">
