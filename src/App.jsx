@@ -1,66 +1,55 @@
 import React, { useState } from 'react';
-import { RefreshCw, Radio } from 'lucide-react';
+import { Play, TrendingUp, RefreshCw, Radio } from 'lucide-react';
 
-export default function App() {
-  const [activeChannel, setActiveChannel] = useState('global_intel');
+export default function GlobergDashboard() {
+  const [activeChannel, setActiveChannel] = useState('https://www.youtube.com/embed/5n9M962U5zA?autoplay=1&mute=1'); // Al Jazeera
 
   return (
-    <div className="min-h-screen bg-[#030508] text-slate-400 font-mono overflow-hidden selection:bg-red-900/30">
+    <div className="bg-[#0b0e14] text-slate-300 min-h-screen p-2 font-mono selection:bg-red-900/50">
       
-      {/* 1. CLEAN HIGH-TECH HEADER */}
-      <header className="flex justify-between items-center px-8 py-4 border-b border-white/5">
-        <h1 className="text-white text-xl font-black tracking-[0.3em]">GLOBERG</h1>
-        <div className="flex gap-8 text-[10px] uppercase tracking-widest text-slate-500">
-          <span>NASDAQ: 30,337.5</span>
-          <span>USD/INR: 94.3100</span>
-          <span>S&P 500: 7,491.6</span>
-          <button className="flex items-center gap-2 text-white hover:text-red-500 transition">
-            <RefreshCw className="w-3 h-3" /> REFRESH
-          </button>
+      {/* 1. TOP Ticker Tape (TradingView) */}
+      <div className="h-[40px] w-full bg-[#06090e] border border-white/5 mb-2 overflow-hidden">
+        <iframe 
+          src="https://s.tradingview.com/embed-widget-ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22NYMEX%3ACL1!%22%2C%22title%22%3A%22Crude%20Oil%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22title%22%3A%22NASDAQ%22%7D%2C%7B%22proName%22%3A%22FX_IDC%3AUSDINR%22%2C%22title%22%3A%22USD%2FINR%22%7D%5D%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22displayMode%22%3A%22adaptive%22%7D" 
+          className="w-full h-full border-0"
+        />
+      </div>
+
+      <header className="flex justify-between items-center px-4 py-2 border-b border-white/5 mb-4">
+        <h1 className="text-white text-lg font-black tracking-[0.2em]">GLOBERG</h1>
+        <div className="flex gap-4">
+          <button onClick={() => setActiveChannel('https://www.youtube.com/embed/5n9M962U5zA?autoplay=1&mute=1')} className="text-[9px] hover:text-white uppercase">Al Jazeera</button>
+          <button onClick={() => setActiveChannel('https://www.youtube.com/embed/Wmqiqumz_As?autoplay=1&mute=1')} className="text-[9px] hover:text-white uppercase">Bloomberg</button>
+          <button onClick={() => setActiveChannel('https://www.youtube.com/embed/G6jWnQ-0T9g?autoplay=1&mute=1')} className="text-[9px] hover:text-white uppercase">CNN</button>
         </div>
       </header>
 
-      {/* 2. DYNAMIC GRID LAYOUT */}
-      <main className="p-6 grid grid-cols-12 gap-6 h-[85vh]">
+      {/* 2. MAIN GRID (Map & Video) */}
+      <div className="grid grid-cols-12 gap-4 h-[45vh]">
+        <div className="col-span-8 bg-black border border-white/5 rounded-sm relative overflow-hidden">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12000000!2d40!3d25!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sin" className="w-full h-full grayscale opacity-50 brightness-50" />
+          <div className="absolute top-4 left-4 text-white text-[10px] font-bold tracking-widest uppercase border-l border-red-500 pl-2">Tactical Map // Active</div>
+        </div>
         
-        {/* MAP MODULE (Left Large) */}
-        <div className="col-span-8 bg-[#06090e] border border-white/5 rounded-sm relative overflow-hidden group">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d45000000!2d35.0!3d24.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sin!4v1718910000000!5m2!1sen!2sin"
-            className="w-full h-full grayscale contrast-[1.2] brightness-[0.4] opacity-60"
-          />
-          <div className="absolute bottom-6 left-6 text-[10px] font-bold text-white uppercase tracking-widest border-l-2 border-red-500 pl-3">
-            Tactical Satellite Layer // Active
+        <div className="col-span-4 bg-black border border-white/5 relative">
+          <div className="absolute top-2 left-2 z-10 bg-black/50 px-2 py-0.5 text-[8px] uppercase text-red-500 flex items-center gap-1">
+            <Radio className="w-3 h-3" /> Live Feed
           </div>
+          <iframe className="w-full h-full" src={activeChannel} allow="autoplay" />
         </div>
+      </div>
 
-        {/* 3. FLOATING VIDEO CONTAINER (Right side but movable) */}
-        {/* Is div ko aap CSS grid mein kahi bhi move kar sakte hain */}
-        <div className="col-span-4 flex flex-col gap-6">
-          <div className="bg-black border border-white/5 h-[300px] relative overflow-hidden">
-            <div className="absolute top-2 left-3 z-10 flex items-center gap-2 text-[9px] uppercase tracking-widest text-red-500">
-              <Radio className="w-3 h-3 animate-pulse" /> Live Matrix Feed
-            </div>
-            <iframe
-              className="w-full h-full opacity-80 hover:opacity-100 transition-opacity"
-              src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&modestbranding=1"
-              allow="autoplay"
-            ></iframe>
-          </div>
-
-          {/* BULLETINS SECTION */}
-          <div className="bg-[#06090e] border border-white/5 p-6 flex-1">
-            <h2 className="text-[10px] text-white uppercase tracking-widest mb-6">Synchronized Bulletins</h2>
-            <div className="space-y-4">
-              <div className="border-l border-white/10 pl-4">
-                <p className="text-[11px] leading-relaxed">Federal Reserve Signposts Extended Rate Stabilization Windows.</p>
-                <span className="text-[9px] text-slate-600">3m AGO // SOURCE: DESK</span>
-              </div>
-            </div>
-          </div>
+      {/* 3. TRADINGVIEW BOTTOM DASHBOARD */}
+      <div className="mt-4 h-[30vh] bg-[#06090e] border border-white/5 p-2">
+        <div className="flex justify-between items-center mb-2 px-2">
+          <span className="text-[10px] font-bold uppercase text-slate-500">Market Analytics // Crude Oil & Indices</span>
+          <TrendingUp className="w-4 h-4 text-green-500" />
         </div>
-
-      </main>
+        <iframe 
+          src="https://s.tradingview.com/embed-widget-advanced-chart/?locale=en#%7B%22symbol%22%3A%22NYMEX%3ACL1!%22%2C%22interval%22%3A%22D%22%2C%22timezone%22%3A%22Etc%2FUTC%22%2C%22theme%22%3A%22dark%22%2C%22style%22%3A%221%22%2C%22toolbar_bg%22%3A%22%2306090e%22%2C%22hide_top_toolbar%22%3Afalse%2C%22allow_symbol_change%22%3Atrue%2C%22save_image%22%3Afalse%2C%22calendar%22%3Afalse%2C%22hide_volume%22%3Atrue%2C%22support_host%22%3A%22https%3A%2F%2Fwww.tradingview.com%22%7D" 
+          className="w-full h-full border-0"
+        />
+      </div>
     </div>
   );
 }
